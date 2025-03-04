@@ -85,12 +85,14 @@
       # File operations
       ll = "eza -l";
       la = "eza -la";
-      cat = "bat";
             
       # System
       update = "home-manager switch --flake .#duncanjames";
     };
-    initExtra = builtins.readFile ./zsh/config.zsh;
+    initExtra = builtins.readFile ./modules/zsh/config.zsh;
+    envExtra = ''
+      export PATH=$HOME/.nix-profile/bin:$PATH
+    '';
   };
 
   programs = {
@@ -108,74 +110,20 @@
         pull.rebase = true;
         core.editor = "nano";
         push.autoSetupRemote = true;
-        user.signingkey = "~/.ssh/id_ed25519.pub";
+        user.signingkey = "/usr/local/google/home/duncanjames/.ssh/id_ed25519.pub";
         gpg.format = "ssh";
         commit.gpgsign = true;
+        merge.conflictstyle = "zdiff3";
+        rebase.autosquash = true;
+        rebase.autostash = true;
+        commit.verbose = true;
+        diff.colorMoved = true;
+        diff.algorithm = "histogram";
+        feature.experimental = true;
+        branch.sort = "committerdate";
+        column.ui = "auto";
       };
       delta.enable = true;
-    };
-
-
-    tmux = {
-      enable = true;
-      shortcut = "a";
-      keyMode = "vi";
-      baseIndex = 1;
-      escapeTime = 0;
-      historyLimit = 50000;
-      terminal = "screen-256color";
-      customPaneNavigationAndResize = true;
-      
-      extraConfig = ''
-        # Enable mouse control
-        set -g mouse on
-
-        # Better split pane keys
-        bind | split-window -h
-        bind - split-window -v
-        unbind '"'
-        unbind %
-
-        # Easy config reload
-        bind r source-file ~/.config/tmux/tmux.conf \; display-message "tmux.conf reloaded."
-
-        # Don't rename windows automatically
-        set-option -g allow-rename off
-
-        # Better colors
-        set -g default-terminal "screen-256color"
-        set -ga terminal-overrides ",xterm-256color:Tc"
-
-        # Status bar
-        set -g status-position bottom
-        set -g status-style bg=default
-        set -g status-left ""
-        set -g status-right "#[fg=green]#H #[fg=yellow]%H:%M"
-        
-        # Window status
-        set-window-option -g window-status-style fg=colour244,bg=default
-        set-window-option -g window-status-current-style fg=colour222,bg=default
-
-        # Pane borders
-        set -g pane-border-style fg=colour238
-        set -g pane-active-border-style fg=colour51
-
-        # Activity monitoring
-        setw -g monitor-activity on
-        set -g visual-activity on
-
-        # Vi copypaste mode
-        set-window-option -g mode-keys vi
-        bind-key -T copy-mode-vi v send-keys -X begin-selection
-        bind-key -T copy-mode-vi y send-keys -X copy-selection
-        bind-key -T copy-mode-vi r send-keys -X rectangle-toggle
-
-        # Smart pane switching with awareness of Vim splits
-        bind h select-pane -L
-        bind j select-pane -D
-        bind k select-pane -U
-        bind l select-pane -R
-      '';
     };
   };
 
@@ -193,14 +141,15 @@
     
     # Development
     GOPATH = "$HOME/go";
-    PATH = "$HOME/go/bin:$PATH";
-    USE_BAZEL_VERSION = "latest";
-    
+    USE_BAZEL_VERSION = "latest";    
     # Cloud
     USE_GKE_GCLOUD_AUTH_PLUGIN = "True";
     
     # Python
     PYTHONPATH = "";
     POETRY_VIRTUALENVS_IN_PROJECT = "true";
+
+    TERM = "xterm-256color";
+    COLORTERM = "truecolor";
   };
 }

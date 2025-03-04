@@ -138,6 +138,7 @@ alias python="uv run --python 3.12 -- python"
 # Path configurations
 typeset -U path  # Ensure unique entries
 path=(
+    $HOME/.nix-profile/bin
     $HOME/{bin,go/bin}
     $HOME/.local/bin
     /usr/local/google/home/duncanjames/{.local/bin}
