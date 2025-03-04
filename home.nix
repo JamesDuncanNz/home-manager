@@ -92,28 +92,20 @@
     initExtra = builtins.readFile ./modules/zsh/config.zsh;
     envExtra = ''
       export PATH=$HOME/.nix-profile/bin:$PATH
+      export XDG_CONFIG_HOME="$HOME/.config"
+      export XDG_DATA_HOME="$HOME/.local/share"
+      export XDG_STATE_HOME="$HOME/.local/state"
+      export KUBECACHEDIR=$HOME/$LOGNAME/.kube/cache
     '';
   };
 
   programs = {
-    direnv = {
-      enable = true;
-      nix-direnv.enable = true;
-    };
+    #direnv = {
+      #enable = true;
+      #nix-direnv.enable = true;
+    #};
 
-    k9s = {
-      enable = true;
-      package = pkgs.k9s.overrideAttrs (oldAttrs: {
-        version = "0.40.4";
-        src = pkgs.fetchFromGitHub {
-          owner = "derailed";
-          repo = "k9s";
-          rev = "v0.40.4";
-          sha256 = "17kz30bxf2l440whv5593fh6456y6f471cc3d0glcws1f9a1hj0x";
-        };
-        vendorHash = null;
-      });
-    };
+    
 
     git = {
       enable = true;
@@ -165,5 +157,9 @@
 
     TERM = "xterm-256color";
     COLORTERM = "truecolor";
+
+    XDG_CONFIG_HOME = "$HOME/.config";
+    XDG_DATA_HOME = "$HOME/.local/share";
+    XDG_STATE_HOME = "$HOME/.local/state";
   };
 }
