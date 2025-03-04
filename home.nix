@@ -101,6 +101,20 @@
       nix-direnv.enable = true;
     };
 
+    k9s = {
+      enable = true;
+      package = pkgs.k9s.overrideAttrs (oldAttrs: {
+        version = "0.40.4";
+        src = pkgs.fetchFromGitHub {
+          owner = "derailed";
+          repo = "k9s";
+          rev = "v0.40.4";
+          sha256 = "17kz30bxf2l440whv5593fh6456y6f471cc3d0glcws1f9a1hj0x";
+        };
+        vendorHash = null;
+      });
+    };
+
     git = {
       enable = true;
       userName = "James Duncan";
